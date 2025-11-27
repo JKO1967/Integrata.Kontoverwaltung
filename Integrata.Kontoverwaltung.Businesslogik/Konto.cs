@@ -1,4 +1,6 @@
 ﻿using Integrata.Kontoverwaltung.Businesslogik.Enums;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Integrata.Kontoverwaltung.Businesslogik
 {
@@ -21,7 +23,7 @@ namespace Integrata.Kontoverwaltung.Businesslogik
     /// Repräsentiert ein Bankkonto mit grundlegenden Funktionen wie Einzahlen und Auszahlen.
     /// Beinhaltet Kontoinhaber, Kontonummer, Dispositionsrahmen, Währung sowie eine einfache IBAN-Darstellung.
     /// </summary>
-    public abstract class Konto: IDisposable
+    public abstract class Konto : IDisposable, INotifyPropertyChanged
     {
         /// <summary>
         /// Interner Speicher für den aktuellen Saldo des Kontos.
@@ -34,6 +36,7 @@ namespace Integrata.Kontoverwaltung.Businesslogik
 
         public event KontoEventHandler? AktuellerSaldoChanged;
         public event KontoEventHandler? KontoUeberzogen;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Initialisiert ein neues Konto für den angegebenen Besitzer.
@@ -49,6 +52,8 @@ namespace Integrata.Kontoverwaltung.Businesslogik
             Waehrung = Waehrung.EUR;
         }
 
+        // Spezielle Listentyp für Datenbindung in WPF
+        //public ObservableCollection<Buchung> Buchungen { get; set; } = [];  // [] Shortcut für new List<Buchung>();
         public List<Buchung> Buchungen { get; set; } = [];  // [] Shortcut für new List<Buchung>();
 
         /// <summary>
@@ -157,6 +162,8 @@ namespace Integrata.Kontoverwaltung.Businesslogik
             {
                 KontoUeberzogen?.Invoke(this, new KontoEventArgs() { AlterSaldo = alterSaldo, NeuerSaldo = value, Konto = this });
             }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AktuellerSaldo)));
             return AktuellerSaldo;
         }
 

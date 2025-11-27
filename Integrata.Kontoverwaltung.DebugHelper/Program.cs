@@ -55,6 +55,22 @@ internal class Program
             Console.WriteLine($"Gesamtsaldo = {gk + sk}");
 
             Console.WriteLine(ParamArraySample(true, "hallo", "welt", "wie", "gefällt", "euch", "c#"));
+
+
+            try
+            {
+                gk.Auszahlen(50_000);
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("Konto überzogen");
+                return;                
+            }
+            finally 
+            {
+                Console.WriteLine("ByeBye");
+            }
+            
         }
     }
 

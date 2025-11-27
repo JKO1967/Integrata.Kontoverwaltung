@@ -14,6 +14,6 @@ public class GiroKonto : Konto
 
     public override double Monatsabschluss()
     {
-        return TransaktionAusfuehren(-Gebuehren, Enums.Transaktionsart.Monatsabschluss);
+        return TransaktionAusfuehren(Gebuehren, Enums.Transaktionsart.Monatsabschluss);
     }
 }

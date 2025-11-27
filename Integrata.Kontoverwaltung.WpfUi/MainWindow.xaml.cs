@@ -1,4 +1,5 @@
 ﻿using Integrata.Kontoverwaltung.Businesslogik;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Integrata.Kontoverwaltung.WpfUi;
@@ -8,6 +9,7 @@ namespace Integrata.Kontoverwaltung.WpfUi;
 public partial class MainWindow : Window
 {
     private Konto? konto;
+    private ObservableCollection<Buchung>? Buchungen;
 
     public MainWindow()
     {
@@ -26,10 +28,15 @@ public partial class MainWindow : Window
             else
             {
                 neuesKonto = new SparKonto(new PersonenInhaber(txtName.Text));
-                ((SparKonto)neuesKonto).BonusNotification += NotificationMessage_Received;
+                //((SparKonto)neuesKonto).BonusNotification += NotificationMessage_Received;
             }
+            GenerateBuchungen(neuesKonto);
             neuesKonto.AktuellerSaldoChanged += Konto_SaldoChanged;
-            neuesKonto.KontoUeberzogen += Konto_Ueberzogen;
+            //neuesKonto.KontoUeberzogen += Konto_Ueberzogen;
+            neuesKonto.KontoUeberzogen += (sender, e) =>
+            {
+                MessageBox.Show($"Achtung: Das Konto ist überzogen! Aktueller Saldo: {e.NeuerSaldo.ToString("###,##0.00")}", "Konto überzogen", MessageBoxButton.OK, MessageBoxImage.Warning);
+            };
             int position = lstKonto.Items.Add(neuesKonto);
             lstKonto.SelectedIndex = position;
         }
@@ -37,6 +44,19 @@ public partial class MainWindow : Window
         {
             MessageBox.Show("Bitte geben Sie den Namen des Kontoinhabers an.");
             txtName.Focus();
+        }
+    }
+
+    private void GenerateBuchungen(Konto neuesKonto)
+    {
+        for (int i = 1; i < 40; i++)
+        {
+            neuesKonto.Einzahlen(100 * (i + 1));
+            neuesKonto.Auszahlen(50 * i);
+            if (i % 5 == 0)
+            {
+                neuesKonto.Monatsabschluss();
+            }
         }
     }
 
@@ -66,6 +86,16 @@ public partial class MainWindow : Window
             txtKontotyp.Text = konto.GetType().Name;
             txtAktuellerSaldo.Text = konto.AktuellerSaldo.ToString("###,##0.00");
             txtWaehrung.Text = konto.Waehrung.ToString();
+            Buchungen = new ObservableCollection<Buchung>(konto.Buchungen);
+            dgKontoDetails.ItemsSource = Buchungen;
+
+            txtCurrentSaldo.SetBinding(System.Windows.Controls.TextBox.TextProperty, new System.Windows.Data.Binding("AktuellerSaldo")
+            {
+                Source = konto,
+                StringFormat = "###,##0.00",
+                Mode = System.Windows.Data.BindingMode.OneWay
+            });
+
         }
     }
 
@@ -91,8 +121,9 @@ public partial class MainWindow : Window
         {
             try
             {
-                transaction?.Invoke(betrag).ToString("###,##0.00");
+                transaction?.Invoke(betrag);
                 //txtAktuellerSaldo.Text = konto.AktuellerSaldo.ToString("###,##0.00");
+                Buchungen?.Add(konto.Buchungen.Last());
             }
             catch (ArgumentException ex)
             {
@@ -101,6 +132,12 @@ public partial class MainWindow : Window
             catch (InvalidOperationException ex)
             {
                 MessageBox.Show(ex.Message, "Transaktion nicht möglich, da Konto überzogen", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message, "Unerwarteter Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Ich logge jetzt diesen Fehler
+                throw; // Wirf den Fehler erneut, damit er weiter oben behandelt werden kann
             }
         }
         else
@@ -123,10 +160,50 @@ public partial class MainWindow : Window
         try
         {
             konto.Monatsabschluss().ToString("###,##0.00");
+            Buchungen?.Add(konto.Buchungen.Last());
         }
         catch (InvalidOperationException ex)
         {
             MessageBox.Show(ex.Message, "Buchung nicht möglich, da Konto überzogen", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+    }
+
+    private void btnSortieren_Click(object sender, RoutedEventArgs e)
+    {
+        var result = Buchungen?.OrderBy(b => b.Buchungsdatum.Date).ThenBy(b => b.Betrag).ToList();
+        dgKontoDetails.ItemsSource = result;
+    }
+
+    private void btnFilter_Click(object sender, RoutedEventArgs e)
+    {
+        // LINQ Methodsyntax
+        //dgKontoDetails.ItemsSource = Buchungen?
+        //    //.Where(b => b.Betrag >= 500 && b.Transaktionsart == Businesslogik.Enums.Transaktionsart.Einzahlen)
+        //    //.Where(DoFiltern)
+        //    .Where(b => DoFiltern(b))
+        //    .OrderByDescending(b => b.Betrag)
+        //    .ToList();
+
+        // LINQ Querysyntax
+        dgKontoDetails.ItemsSource = (from b in Buchungen!
+                                      where b.Betrag >= 500 && b.Transaktionsart == Businesslogik.Enums.Transaktionsart.Einzahlen
+                                      orderby b.Betrag descending
+                                      select b).ToList();
+    }
+
+    private bool DoFiltern(Buchung b)
+    {
+        return b.Betrag >= 500 && b.Transaktionsart == Businesslogik.Enums.Transaktionsart.Einzahlen;
+    }
+
+    private void btnTransformation_Click(object sender, RoutedEventArgs e)
+    {
+        dgKontoDetails.ItemsSource = Buchungen?.Select(b => new { Datum = b.Buchungsdatum.ToLongDateString(), b.Betrag, Art = b.Transaktionsart }).ToList();
+    }
+
+    private void btnReset_Click(object sender, RoutedEventArgs e)
+    {
+        dgKontoDetails.ItemsSource = Buchungen;
     }
 }
