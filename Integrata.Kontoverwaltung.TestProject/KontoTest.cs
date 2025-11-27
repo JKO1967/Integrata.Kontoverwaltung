@@ -1,4 +1,6 @@
-﻿namespace Integrata.Kontoverwaltung.Businesslogik.Tests
+﻿using Integrata.Kontoverwaltung.Businesslogik.Enums;
+
+namespace Integrata.Kontoverwaltung.Businesslogik.Tests
 {
     public class KontoTests
     {
@@ -57,6 +59,7 @@
             // Assert
             Assert.Equal(50.0, result);
             Assert.Equal(50.0, konto.AktuellerSaldo);
+            Assert.Equal(2, konto.Buchungen.Count);
         }
 
         [Theory]

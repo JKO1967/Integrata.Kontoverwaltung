@@ -45,47 +45,64 @@ internal class Program
                 konto.Auszahlen(konto.AktuellerSaldo);
                 konto.Einzahlen(100);
                 Console.WriteLine($"Konto vom Typ {konto.GetType().ToString()} vom Inhaber {konto.Inhaber} hat einen Saldo von {konto.AktuellerSaldo.ToString("c")}");
-                
+
             }
 
-            Console.WriteLine($"Gesamtsaldo = {gk +sk}");
+            Console.WriteLine($"Gesamtsaldo = {gk + sk}");
+
+            Console.WriteLine(ParamArraySample(true, "hallo", "welt", "wie", "gefällt", "euch", "c#"));
         }
     }
+
+    private static string ParamArraySample(bool toUpper, params string[] args)
+    {
+        string result = "";
+        foreach (string s in args)
+        {
+            result += s + "; ";
+        }
+        if (toUpper)
+        {
+            result = result.ToUpper();
+        }
+        return result;
+    }
+
 
     public static void Bonusnachricht(string message)
     {
         Console.WriteLine($"Super, ich habe gerade einen Bonus bekommen: {message}");
     }
 
-    public class A
+}
+public class A
+{
+    public A()
     {
-        public A()
-        {
-            Console.WriteLine("Ich bin der Konstruktor von A");
-        }
+        Console.WriteLine("Ich bin der Konstruktor von A");
     }
+}
 
-    public class B : A
+public class B : A
+{
+    public B()
     {
-        public B()
-        {
-            Console.WriteLine("Ich bin der Konstruktor von B");
-        }
+        Console.WriteLine("Ich bin der Konstruktor von B");
     }
+}
 
-    public class C : B
+public class C : B
+{
+    public C(string x)
     {
-        public C(string x)
-        {
-            Console.WriteLine($"Ich bin der Konstruktor von C und heiße {x}");
-        }
+        Console.WriteLine($"Ich bin der Konstruktor von C und heiße {x}");
     }
+}
 
-    public class D : C
+public class D : C
+{
+    public D(string x) : base(x)
     {
-        public D(string x):base(x)
-        {
-            Console.WriteLine("Ich bin der Konstruktor von D");
-        }
+        Console.WriteLine("Ich bin der Konstruktor von D");
     }
 }

@@ -22,9 +22,10 @@ public class SparKonto:Konto
             throw new InvalidOperationException("Einzahlungen über 10.000 sind auf Sparkonten nicht erlaubt.");
         }
 
-        if (DateTime.Now.Month == 11 && DateTime.Now.Day == 26) // Weltspartag
+        if (DateTime.Now.Month == 11 && DateTime.Now.Day == 27) // Weltspartag
         {
-            betrag += 2; // Bonus von 2 Einheiten
+            TransaktionAusfuehren(2.0, Enums.Transaktionsart.Bonusgutschrift, "Einzhalung am Weltspartag");
+            // Bonus von 2 Einheiten
             //BonusNotification?.Invoke($"Bonus von 2 {Waehrung} für Einzahlung am Weltspartag!");
             BonusNotification($"Bonus von 2 {Waehrung} für Einzahlung am Weltspartag!");
             //if (BonusNotification != null)
@@ -37,7 +38,6 @@ public class SparKonto:Konto
 
     public override double Monatsabschluss()
     {
-        AktuellerSaldo += (AktuellerSaldo * Zinssatz / 1200);
-        return AktuellerSaldo;
+        return TransaktionAusfuehren(AktuellerSaldo * Zinssatz / 1200, Enums.Transaktionsart.Zinsgutschrift);
     }
 }

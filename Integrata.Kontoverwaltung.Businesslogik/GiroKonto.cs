@@ -14,7 +14,6 @@ public class GiroKonto : Konto
 
     public override double Monatsabschluss()
     {
-        AktuellerSaldo -= Gebuehren;
-        return AktuellerSaldo;
+        return TransaktionAusfuehren(-Gebuehren, Enums.Transaktionsart.Monatsabschluss);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Integrata.Kontoverwaltung.Businesslogik
+﻿using Integrata.Kontoverwaltung.Businesslogik.Enums;
+
+namespace Integrata.Kontoverwaltung.Businesslogik
 {
     /*
     Plan (Pseudocode / detaillierte Schritte):
@@ -46,6 +48,8 @@
             Dispo = 500.0;
             Waehrung = Waehrung.EUR;
         }
+
+        public List<Buchung> Buchungen { get; set; } = [];  // [] Shortcut für new List<Buchung>();
 
         /// <summary>
         /// Kontoinhaber.
@@ -96,20 +100,46 @@
         public double AktuellerSaldo
 		{
 			get { return _aktuellerSaldo; }
-			protected set 
+			private set 
             {
-                if (value < -Dispo)
-                {
-                    throw new InvalidOperationException("Dispo überschritten.");
-                }
-                var alterSaldo = _aktuellerSaldo;
-                _aktuellerSaldo = value;
-                AktuellerSaldoChanged?.Invoke(this, new KontoEventArgs() { AlterSaldo = alterSaldo, NeuerSaldo = value, Konto = this });
-                if (value < 0 && value < alterSaldo)
-                {
-                    KontoUeberzogen?.Invoke(this, new KontoEventArgs() { AlterSaldo = alterSaldo, NeuerSaldo = value, Konto = this });
-                }
+                _aktuellerSaldo = value;   
             }
+        }
+
+
+        protected double TransaktionAusfuehren(double betrag, Transaktionsart art, string text = "")
+        {
+            double value = 0;
+
+            switch (art)
+            {
+                case Transaktionsart.Auszahlen:                   
+                case Transaktionsart.Monatsabschluss:
+                    betrag = -betrag;
+                    break;
+                default:
+                    break;
+            }
+
+            value = AktuellerSaldo + betrag;
+
+            if (value < -Dispo && art == Transaktionsart.Auszahlen)
+            {
+                throw new InvalidOperationException("Dispo überschritten.");
+            }
+
+            Buchungen.Add(new Buchung(betrag, art) { Buchungstext = text });
+
+            var alterSaldo = AktuellerSaldo;
+            AktuellerSaldo = value;
+            
+            AktuellerSaldoChanged?.Invoke(this, new KontoEventArgs() { AlterSaldo = alterSaldo, NeuerSaldo = value, Konto = this });
+            
+            if (value < 0 && art == Transaktionsart.Auszahlen)
+            {
+                KontoUeberzogen?.Invoke(this, new KontoEventArgs() { AlterSaldo = alterSaldo, NeuerSaldo = value, Konto = this });
+            }
+            return AktuellerSaldo;
         }
 
         /// <summary>
@@ -124,8 +154,8 @@
             {
                 throw new ArgumentException("Betrag muss positiv sein.");
             }
-            AktuellerSaldo += betrag;
-            return _aktuellerSaldo;
+           
+            return TransaktionAusfuehren(betrag, Transaktionsart.Einzahlen);
         }
 
         /// <summary>
@@ -141,8 +171,7 @@
             {
                 throw new ArgumentException("Betrag muss positiv sein.");
             }
-            AktuellerSaldo -= betrag;
-            return _aktuellerSaldo;
+            return TransaktionAusfuehren(betrag, Transaktionsart.Auszahlen);
         }
 
         protected virtual void Dispose(bool disposing)
