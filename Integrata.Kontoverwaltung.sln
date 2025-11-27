@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.36631.10 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrata.Kontoverwaltung.Businesslogik", "Integrata.Kontoverwaltung.Businesslogik\Integrata.Kontoverwaltung.Businesslogik.csproj", "{1E0018A5-96AD-4C0E-A64E-9982F171D8C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrata.Kontoverwaltung.DebugHelper", "Integrata.Kontoverwaltung.DebugHelper\Integrata.Kontoverwaltung.DebugHelper.csproj", "{DF13557C-7EB5-413B-8D5E-524832625E0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrata.Kontoverwaltung.TestProject", "Integrata.Kontoverwaltung.TestProject\Integrata.Kontoverwaltung.TestProject.csproj", "{DB40F635-73DE-453F-A7F5-21E48828592F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrata.Kontoverwaltung.WpfUi", "Integrata.Kontoverwaltung.WpfUi\Integrata.Kontoverwaltung.WpfUi.csproj", "{B0BEE5A6-6F5D-4421-9730-BB2B3D713EC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSample", "WebApiSample\WebApiSample.csproj", "{578AD85C-032A-492F-819A-7FBEA65B097E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E0018A5-96AD-4C0E-A64E-9982F171D8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E0018A5-96AD-4C0E-A64E-9982F171D8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E0018A5-96AD-4C0E-A64E-9982F171D8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0018A5-96AD-4C0E-A64E-9982F171D8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF13557C-7EB5-413B-8D5E-524832625E0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF13557C-7EB5-413B-8D5E-524832625E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF13557C-7EB5-413B-8D5E-524832625E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF13557C-7EB5-413B-8D5E-524832625E0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB40F635-73DE-453F-A7F5-21E48828592F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB40F635-73DE-453F-A7F5-21E48828592F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB40F635-73DE-453F-A7F5-21E48828592F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB40F635-73DE-453F-A7F5-21E48828592F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0BEE5A6-6F5D-4421-9730-BB2B3D713EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0BEE5A6-6F5D-4421-9730-BB2B3D713EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0BEE5A6-6F5D-4421-9730-BB2B3D713EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0BEE5A6-6F5D-4421-9730-BB2B3D713EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578AD85C-032A-492F-819A-7FBEA65B097E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578AD85C-032A-492F-819A-7FBEA65B097E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578AD85C-032A-492F-819A-7FBEA65B097E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578AD85C-032A-492F-819A-7FBEA65B097E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
