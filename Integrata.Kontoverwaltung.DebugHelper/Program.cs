@@ -16,6 +16,10 @@ internal class Program
             Console.WriteLine(k.AktuellerSaldo.ToString("c"));
             k.Auszahlen(100.0);
             Console.WriteLine(k.AktuellerSaldo.ToString("c"));
+
+            // Aufruf des Indexer
+            Console.WriteLine(k[0].Transaktionsart.ToString());
+
             D d = new D("xx");
             SparKonto sk = new SparKonto(new PersonenInhaber("Mario"));
             // hier registriere ich mich für die Action Bonusnotification

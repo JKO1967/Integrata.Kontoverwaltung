@@ -52,6 +52,24 @@ namespace Integrata.Kontoverwaltung.Businesslogik
         public List<Buchung> Buchungen { get; set; } = [];  // [] Shortcut für new List<Buchung>();
 
         /// <summary>
+        /// Indexer
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="IndexOutOfRangeException"></exception>
+        public Buchung this[int index]
+        {
+            get 
+            {
+                if (index < 0 || index >= Buchungen.Count)
+                {
+                    throw new IndexOutOfRangeException("Ungültiger Buchungsindex.");
+                }
+                return Buchungen[index]; 
+            }
+        }
+
+        /// <summary>
         /// Kontoinhaber.
         /// </summary>
         /// <value>Der Kontoinhaber, der/die das Konto besitzt.</value>
