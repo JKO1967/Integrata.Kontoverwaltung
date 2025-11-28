@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.36631.10 d17.12
+VisualStudioVersion = 17.12.36631.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrata.Kontoverwaltung.Businesslogik", "Integrata.Kontoverwaltung.Businesslogik\Integrata.Kontoverwaltung.Businesslogik.csproj", "{1E0018A5-96AD-4C0E-A64E-9982F171D8C1}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integrata.Kontoverwaltung.WpfUi", "Integrata.Kontoverwaltung.WpfUi\Integrata.Kontoverwaltung.WpfUi.csproj", "{B0BEE5A6-6F5D-4421-9730-BB2B3D713EC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSample", "WebApiSample\WebApiSample.csproj", "{578AD85C-032A-492F-819A-7FBEA65B097E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoWordAddIn", "DemoWordAddIn\DemoWordAddIn.csproj", "{4D7600F1-D702-4EA5-A317-9762A7D8906F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{578AD85C-032A-492F-819A-7FBEA65B097E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578AD85C-032A-492F-819A-7FBEA65B097E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{578AD85C-032A-492F-819A-7FBEA65B097E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D7600F1-D702-4EA5-A317-9762A7D8906F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D7600F1-D702-4EA5-A317-9762A7D8906F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7600F1-D702-4EA5-A317-9762A7D8906F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D7600F1-D702-4EA5-A317-9762A7D8906F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
