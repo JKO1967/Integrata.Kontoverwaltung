@@ -1,6 +1,7 @@
 ﻿using System;
 using Xunit;
 using Integrata.Kontoverwaltung.Businesslogik;
+using Moq;
 
 namespace Integrata.Kontoverwaltung.TestProjekt
 {
@@ -71,6 +72,7 @@ namespace Integrata.Kontoverwaltung.TestProjekt
             // Act  
             var weltspartag = new DateTime(DateTime.Now.Year, 11, 27);
             SystemTime.Set(weltspartag);
+            var date = SystemTime.Now;
             var neuerSaldo = sparKonto.Einzahlen(betrag);
             SystemTime.Reset();
             // Assert  
@@ -79,24 +81,31 @@ namespace Integrata.Kontoverwaltung.TestProjekt
         }
 
         [Fact]
-        public void Monatsabschluss_ZinsenHinzugefuegt()
+        public void Monatsabschluss_ZinsenHinzugefuegt_MitMock()
         {
-            var weltspartag = new DateTime(DateTime.Now.Year, 11, 27);
-            // Arrange  
-            var sparKonto = new SparKonto(new MockInhaber());
+            // Arrange
+            var mockSparKonto = new Mock<SparKonto>(new MockInhaber()) { CallBase = true };
             double betrag = 8_000;
-            sparKonto.Einzahlen(betrag);
+            //mockSparKonto.Setup(k => k.Einzahlen(It.IsAny<double>())).Returns((double b) => b);
+            var saldo =mockSparKonto.Object.Einzahlen(betrag);
+            saldo = mockSparKonto.Object.Einzahlen(betrag);
+            mockSparKonto.Object.Auszahlen(2000); // Aktueller Saldo 14.000
 
-            // Act  
-            var neuerSaldo = sparKonto.Monatsabschluss();
+            //mockSparKonto.Setup(k => k.Monatsabschluss()).Returns(() =>
+            //{
+            //    double zinsen = betrag * 1.5 / 1200;
+            //    return betrag + zinsen;
+            //});
+            var zins = 1.5;
+            var aktuellerSaldo = mockSparKonto.Object.AktuellerSaldo;
+            mockSparKonto.Setup(k => k.GetZinsFromDatabase()).Returns(zins);
 
-            if (DateTime.Now.Date == weltspartag)
-            {
-                betrag += 2;
-            }
-            // Assert  
-            double erwarteteZinsen = betrag * 1.5 / 1200;
-            Assert.Equal(betrag + erwarteteZinsen, neuerSaldo, 2);
+            // Act
+            var neuerSaldo = mockSparKonto.Object.Monatsabschluss();
+
+            // Assert
+            double erwarteteZinsen = aktuellerSaldo * zins / 1200;
+            Assert.Equal(aktuellerSaldo + erwarteteZinsen, neuerSaldo, 2);
         }
     }
 

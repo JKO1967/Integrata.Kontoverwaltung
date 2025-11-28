@@ -38,6 +38,13 @@ public class SparKonto:Konto
 
     public override double Monatsabschluss()
     {
-        return TransaktionAusfuehren(AktuellerSaldo * Zinssatz / 1200, Enums.Transaktionsart.Zinsgutschrift);
+        double zins = GetZinsFromDatabase();
+        return TransaktionAusfuehren(AktuellerSaldo * zins / 1200, Enums.Transaktionsart.Zinsgutschrift);
+    }
+
+    public virtual double GetZinsFromDatabase()
+    {
+        // hier der datenbankzugriff erfolgt;
+        return 1.0;
     }
 }

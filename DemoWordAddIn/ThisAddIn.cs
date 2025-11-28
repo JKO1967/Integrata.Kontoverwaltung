@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Word = Microsoft.Office.Interop.Word;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Word;
+﻿using Microsoft.Office.Tools.Ribbon;
+using System;
 using System.Threading;
-using Microsoft.Office.Core;
-using Microsoft.Office.Tools.Ribbon;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace DemoWordAddIn
 {
