@@ -56,6 +56,11 @@ internal class Program
 
             Console.WriteLine(ParamArraySample(true, "hallo", "welt", "wie", "gefällt", "euch", "c#"));
 
+            double zahl = 23.5 / 0.0;
+            if (double.IsInfinity(zahl))
+            {
+                throw new DivideByZeroException();
+            }
 
             try
             {

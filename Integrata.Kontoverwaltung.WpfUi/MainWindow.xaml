@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Integrata.Kontoverwaltung.WpfUi"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -47,6 +47,7 @@
                     <TextBlock Margin="1,5,5,5" Name="txtWaehrung">€</TextBlock>
                     <TextBlock Margin="5" Name="txtIban"></TextBlock>
                     <TextBlock Margin="5" Name="txtKontotyp"></TextBlock>
+                    <TextBlock Margin="5" Name="txtBenutzer" HorizontalAlignment="Right"></TextBlock>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

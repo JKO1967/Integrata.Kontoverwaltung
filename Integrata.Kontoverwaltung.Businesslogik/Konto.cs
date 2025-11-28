@@ -119,7 +119,6 @@ namespace Integrata.Kontoverwaltung.Businesslogik
         /// Aktueller Kontostand. Der Setter ist privat und überprüft, ob der Dispo überschritten wird.
         /// </summary>
         /// <value>Der aktuelle Saldo des Kontos. Kann negativ sein bis zum negativen Wert von <see cref="Dispo"/>.</value>
-        /// <exception cref="InvalidOperationException">Wird ausgelöst, wenn ein Setzen des Saldos den erlaubten Disporahmen überschreitet.</exception>
         public double AktuellerSaldo
 		{
 			get { return _aktuellerSaldo; }
@@ -129,7 +128,14 @@ namespace Integrata.Kontoverwaltung.Businesslogik
             }
         }
 
-
+        /// <summary>
+        /// Führt eine Transaktion auf dem Konto aus, basierend auf dem Betrag und der Art der Transaktion.
+        /// </summary>
+        /// <param name="betrag"></param>
+        /// <param name="art"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        /// <exception cref="KontoBusinessException"></exception>
         protected double TransaktionAusfuehren(double betrag, Transaktionsart art, string text = "")
         {
             double value = 0;
@@ -148,7 +154,7 @@ namespace Integrata.Kontoverwaltung.Businesslogik
 
             if (value < -Dispo && art == Transaktionsart.Auszahlen)
             {
-                throw new InvalidOperationException("Dispo überschritten.");
+                throw new KontoBusinessException("Dispositionsrahmen überschritten.");
             }
 
             Buchungen.Add(new Buchung(betrag, art) { Buchungstext = text });
@@ -189,7 +195,7 @@ namespace Integrata.Kontoverwaltung.Businesslogik
         /// <param name="betrag">Der auszuzahlende Betrag. Muss größer als 0 sein.</param>
         /// <returns>Der neue Kontostand nach erfolgreicher Auszahlung.</returns>
         /// <exception cref="ArgumentException">Wird ausgelöst, wenn <paramref name="betrag"/> kleiner oder gleich 0 ist.</exception>
-        /// <exception cref="InvalidOperationException">Wird ausgelöst, wenn durch die Auszahlung der Dispo überschritten werden würde (diese Prüfung erfolgt über die Property-Setter-Logik).</exception>
+        /// <exception cref="KontoBusinessException">Wird ausgelöst, wenn durch die Auszahlung der Dispo überschritten werden würde (diese Prüfung erfolgt über die Property-Setter-Logik).</exception>
         public virtual double Auszahlen(double betrag)
         {
             if (betrag <= 0)

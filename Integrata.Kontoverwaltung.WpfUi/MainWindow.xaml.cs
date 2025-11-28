@@ -121,6 +121,7 @@ public partial class MainWindow : Window
         {
             try
             {
+               Utilities.LogMessage($"Versuche Transaktion von {betrag} auf Konto {konto.Iban}");
                 transaction?.Invoke(betrag);
                 //txtAktuellerSaldo.Text = konto.AktuellerSaldo.ToString("###,##0.00");
                 Buchungen?.Add(konto.Buchungen.Last());
@@ -129,12 +130,13 @@ public partial class MainWindow : Window
             {
                 MessageBox.Show(ex.Message, "Fehler bei der Transaktion", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch (InvalidOperationException ex)
+            catch (KontoBusinessException ex)
             {
                 MessageBox.Show(ex.Message, "Transaktion nicht möglich, da Konto überzogen", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
+                Utilities.LogMessage(ex.Message);
                 //MessageBox.Show(ex.Message, "Unerwarteter Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
                 // Ich logge jetzt diesen Fehler
                 throw; // Wirf den Fehler erneut, damit er weiter oben behandelt werden kann
@@ -205,5 +207,12 @@ public partial class MainWindow : Window
     private void btnReset_Click(object sender, RoutedEventArgs e)
     {
         dgKontoDetails.ItemsSource = Buchungen;
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        txtBenutzer.Text = Environment.UserName;
+        //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ar-SA");
+        //MessageBox.Show(DateTime.Now.ToLongDateString(), "Aktuelles Datum in ar-SA Kultur", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 }
